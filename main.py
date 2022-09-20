@@ -23,6 +23,7 @@ def get_last_two_stock_close():
     """
     This function gets the last two day's closing data.
     Returns a tuple of this data.
+
     :return: last_close, before_last_close
     """
     response = requests.get(url=URL_STOCK, params=ALPHAVANTAGE_PARAMETERS)
@@ -35,6 +36,12 @@ def get_last_two_stock_close():
 
 
 def compare_closes(closes):
+    """
+    Compare two closing data and returns difference in percentage.
+
+    :param closes
+    :return: diff_per
+    """
     diff = closes[0] - closes[1]
     diff_per = (diff / (closes[1] / 100))
 
@@ -47,6 +54,7 @@ def compare_closes(closes):
 last_closes = get_last_two_stock_close()
 compare = compare_closes(closes=last_closes)
 print(compare)
+
 # TODO 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
 

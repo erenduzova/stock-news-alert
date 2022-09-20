@@ -7,7 +7,7 @@ load_dotenv()
 # API KEYS
 API_KEY_STOCK = os.getenv("API_KEY_ALPHAVANTAGE")
 
-STOCK = "TSLA"
+STOCK = "SHC"
 COMPANY_NAME = "Tesla Inc"
 
 # Stock parameters
@@ -48,12 +48,10 @@ def compare_closes(closes):
     return float("{:.2f}".format(diff_per))
 
 
-# TODO 1: Use https://www.alphavantage.co
-# When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-
 last_closes = get_last_two_stock_close()
 compare = compare_closes(closes=last_closes)
-print(compare)
+if compare <= -5 or compare >= 5:
+    print(f"Difference: %{compare}  Get News")
 
 # TODO 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.

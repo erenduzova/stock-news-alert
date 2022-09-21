@@ -74,10 +74,28 @@ def compare_closes(closes):
 
 
 def get_news():
+    """
+    Gets news data using newsapi and returns news articles data in json format.
+
+    :return: news_articles_data
+    """
     response = requests.get(url=URL_NEWS, params=NEWS_PARAMETERS)
     response.raise_for_status()
     news_articles_data = response.json()["articles"]
     return news_articles_data
+
+
+def create_msg_body(news_func):
+    """
+    Creates and returns message body(string) for sms.
+
+    :param news_func:
+    :return: msg_body_func
+    """
+    headline = news_func["title"]
+    brief = news_func["description"]
+    msg_body_func = f"{diff_symbol} {diff_perc}\nHeadline: {headline}\nBrief: {brief}"
+    return msg_body_func
 
 
 last_closes = get_last_two_stock_close()
@@ -87,10 +105,10 @@ diff_symbol = compare[1]
 if diff_perc >= 5:
     print(f"Difference: {diff_symbol} %{diff_perc}  Get News")
     news_data = get_news()
-    print(news_data)
     client = Client(TW_AC_SID, TW_TOKEN)
     for news in news_data:
-        pass
+        msg_body = create_msg_body(news_func=news)
+        print(msg_body)
 
 # TODO 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number.

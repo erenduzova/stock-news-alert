@@ -13,6 +13,9 @@ API_KEY_NEWS = os.getenv("API_KEY_NEWSAPI")
 STOCK = "TSLA"
 COMPANY_NAME = "tesla"
 
+# Control Percentage
+CONTROL_PER = 5
+
 # Stock parameters
 URL_STOCK = "https://www.alphavantage.co/query"
 ALPHAVANTAGE_PARAMETERS = {
@@ -116,7 +119,7 @@ last_closes = get_last_two_stock_close()
 compare = compare_closes(closes=last_closes)
 diff_perc = compare[0]
 diff_symbol = compare[1]
-if diff_perc >= 5:
+if diff_perc >= CONTROL_PER:
     news_data = get_news()
     client = Client(TW_AC_SID, TW_TOKEN)
     for news in news_data:

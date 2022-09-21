@@ -72,11 +72,7 @@ compare = compare_closes(closes=last_closes)
 if compare <= -5 or compare >= 5:
     print(f"Difference: %{compare}  Get News")
     news_data = get_news()
-
-
-# TODO 2: Use https://newsapi.org
-# Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
-
+    print(news_data)
 
 # TODO 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number.

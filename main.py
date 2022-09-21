@@ -56,15 +56,21 @@ def get_last_two_stock_close():
 
 def compare_closes(closes):
     """
-    Compare two closing data and returns difference in percentage.
+    Compare two closing data and returns difference in percentage and symbol for direction of difference.
 
     :param closes
-    :return: diff_per
+    :return: diff_per, diff_direction
     """
     diff = closes[0] - closes[1]
     diff_per = (diff / (closes[1] / 100))
+    diff_direction = "-"
+    if diff < 0:
+        diff_direction = "🔻"
+        diff_per = -diff_per
+    elif diff > 0:
+        diff_direction = "🔺"
 
-    return float("{:.2f}".format(diff_per))
+    return float("{:.2f}".format(diff_per)), diff_direction
 
 
 def get_news():
@@ -76,11 +82,15 @@ def get_news():
 
 last_closes = get_last_two_stock_close()
 compare = compare_closes(closes=last_closes)
-if compare <= -5 or compare >= 5:
-    print(f"Difference: %{compare}  Get News")
+diff_perc = compare[0]
+diff_symbol = compare[1]
+if diff_perc >= 5:
+    print(f"Difference: {diff_symbol} %{diff_perc}  Get News")
     news_data = get_news()
     print(news_data)
     client = Client(TW_AC_SID, TW_TOKEN)
+    for news in news_data:
+        pass
 
 # TODO 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number.

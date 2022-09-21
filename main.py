@@ -6,8 +6,10 @@ load_dotenv()
 
 # API KEYS
 API_KEY_STOCK = os.getenv("API_KEY_ALPHAVANTAGE")
+API_KEY_NEWS = os.getenv("API_KEY_NEWSAPI")
 
-STOCK = "SHC"
+# Company Info
+STOCK = "SHC"  # For testing, change to TSLA for tesla
 COMPANY_NAME = "Tesla Inc"
 
 # Stock parameters
@@ -16,6 +18,16 @@ ALPHAVANTAGE_PARAMETERS = {
     "function": "TIME_SERIES_DAILY",
     "symbol": STOCK,
     "apikey": API_KEY_STOCK
+}
+
+# News parameters
+URL_NEWS = "https://newsapi.org/v2/everything"
+NEWS_PARAMETERS = {
+    "q": COMPANY_NAME,
+    "sortBy": "publishedAt",
+    "apiKey": API_KEY_NEWS,
+    "pageSize": 3,
+    "page": 1
 }
 
 
@@ -48,14 +60,22 @@ def compare_closes(closes):
     return float("{:.2f}".format(diff_per))
 
 
+def get_news():
+    response = requests.get(url=URL_NEWS, params=NEWS_PARAMETERS)
+    response.raise_for_status()
+    news_articles_data = response.json()["articles"]
+    return news_articles_data
+
+
 last_closes = get_last_two_stock_close()
 compare = compare_closes(closes=last_closes)
 if compare <= -5 or compare >= 5:
     print(f"Difference: %{compare}  Get News")
+    news_data = get_news()
+
 
 # TODO 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
-
 
 
 # TODO 3: Use https://www.twilio.com

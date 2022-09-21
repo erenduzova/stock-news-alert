@@ -10,8 +10,8 @@ API_KEY_STOCK = os.getenv("API_KEY_ALPHAVANTAGE")
 API_KEY_NEWS = os.getenv("API_KEY_NEWSAPI")
 
 # Company Info
-STOCK = "SHC"  # For testing, change to TSLA for tesla
-COMPANY_NAME = "Tesla Inc"
+STOCK = "TSLA"
+COMPANY_NAME = "tesla"
 
 # Stock parameters
 URL_STOCK = "https://www.alphavantage.co/query"
@@ -98,17 +98,27 @@ def create_msg_body(news_func):
     return msg_body_func
 
 
+def send_sms(sms_msg_body):
+    """
+    This function takes message body and sends sms through twilio api.
+
+    :param sms_msg_body:
+    """
+    message = client.messages \
+        .create(
+            body=sms_msg_body,
+            from_=TW_PHONE,
+            to=TO_PHONE
+        )
+
+
 last_closes = get_last_two_stock_close()
 compare = compare_closes(closes=last_closes)
 diff_perc = compare[0]
 diff_symbol = compare[1]
 if diff_perc >= 5:
-    print(f"Difference: {diff_symbol} %{diff_perc}  Get News")
     news_data = get_news()
     client = Client(TW_AC_SID, TW_TOKEN)
     for news in news_data:
         msg_body = create_msg_body(news_func=news)
-        print(msg_body)
-
-# TODO 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and description to your phone number.
+        send_sms(sms_msg_body=msg_body)

@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 import requests
+from twilio.rest import Client
 
 load_dotenv()
 
@@ -29,6 +30,12 @@ NEWS_PARAMETERS = {
     "pageSize": 3,
     "page": 1
 }
+
+# Twilio parameters
+TW_AC_SID = os.getenv("TWILIO_SID")
+TW_TOKEN = os.getenv("TWILIO_TOKEN")
+TW_PHONE = os.getenv("TWILIO_PHONE")
+TO_PHONE = os.getenv("TO_PHONE")
 
 
 def get_last_two_stock_close():
@@ -73,6 +80,7 @@ if compare <= -5 or compare >= 5:
     print(f"Difference: %{compare}  Get News")
     news_data = get_news()
     print(news_data)
+    client = Client(TW_AC_SID, TW_TOKEN)
 
 # TODO 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number.

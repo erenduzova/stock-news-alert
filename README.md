@@ -40,7 +40,7 @@ CONTROL_PER = 5
 
 ## Company Info
 STOCK variable is used for getting data of the stock; COMPANY_NAME variable is used for getting news of the company.<br />
-Change this variables if you want to look for another company.<br />
+Change these variables if you want to look for another company.<br />
 ```
 # Company Info
 STOCK = "TSLA"

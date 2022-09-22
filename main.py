@@ -97,7 +97,7 @@ def create_msg_body(news_func):
     """
     headline = news_func["title"]
     brief = news_func["description"]
-    msg_body_func = f"{diff_symbol} {diff_perc}\nHeadline: {headline}\nBrief: {brief}"
+    msg_body_func = f"{STOCK}: {diff_symbol} {diff_perc}%\nHeadline: {headline}\nBrief: {brief}"
     return msg_body_func
 
 
